@@ -24,7 +24,7 @@ if __name__ == "__main__":
     digest = Skein512(data).final()
     print("hash result:\n\t%s\n" % Skein512(data).hexdigest())
 
-    key = "spam".encode()
+    key = "spam!".encode()
     plaintext = "Spam, Spam, Spam, Spam, Spam, Spam, baked beans, Spam, Spam, Spam and Spam!".encode()
     result = encrypt(plaintext, key)
     print(encrypt(result, key))
