@@ -15,22 +15,7 @@
 #  limitations under the License.
 
 import struct
-from itertools import cycle
-
-# working out some differences between Python versions
-try:
-    from itertools import imap, izip
-except ImportError:
-    imap = map
-    izip = zip
-try:
-    reduce
-except NameError:
-    from functools import reduce
-try:
-    xrange
-except:
-    xrange = range
+from itertools import cycle, imap, izip
 
 ROT = (46, 36, 19, 37,
        33, 27, 14, 42,
@@ -51,13 +36,13 @@ SKEIN_KS_PARITY = 0x5555555555555555
 max64 = 0xffffffffffffffff
 
 # zeroed out byte string and list for convenience and performance
-zero_bytes = '\x00'.encode() * 64
+zero_bytes = struct.pack('64B', [0] * 64)
 zero_words = [0] * 8
 
 # Build structs for conversion appropriate to this system, favoring
 # native formats if possible for slight performance benefit
 words_format_tpl = "%dQ"
-if struct.unpack('=H', '\x00\x01'.encode())[0] == 1: # big endian?
+if struct.pack('2B', 0, 1) == struct.pack('=H', 1): # big endian?
     words_format_tpl = "<" + words_format_tpl # force little endian
 else:
     try: # is 64-bit integer native?

@@ -1,0 +1,6 @@
+*.pyc
+*.orig
+*~
+*.swp
+*.DS_Store
+.~lock*
