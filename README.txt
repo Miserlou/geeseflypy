@@ -17,3 +17,6 @@ unfeasible, such as Google's App Engine.
 
 You also may find the geesefly.py code helpful in understanding Skein
 and Threefish.
+
+geesefly.py works with Python version 2.5 or later. This includes version 3
+and up.

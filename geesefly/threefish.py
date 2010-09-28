@@ -15,7 +15,22 @@
 #  limitations under the License.
 
 import struct
-from itertools import cycle, imap, izip
+from itertools import cycle
+
+# working out some differences between Python 2 and 3
+try:
+    from itertools import imap, izip
+except ImportError:
+    imap = map
+    izip = zip
+try:
+    reduce
+except NameError:
+    from functools import reduce
+try:
+    xrange
+except:
+    xrange = range
 
 ROT = (46, 36, 19, 37,
        33, 27, 14, 42,
@@ -36,7 +51,7 @@ SKEIN_KS_PARITY = 0x5555555555555555
 max64 = 0xffffffffffffffff
 
 # zeroed out byte string and list for convenience and performance
-zero_bytes = struct.pack('64B', [0] * 64)
+zero_bytes = struct.pack('64B', *[0] * 64)
 zero_words = [0] * 8
 
 # Build structs for conversion appropriate to this system, favoring

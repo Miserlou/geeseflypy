@@ -20,6 +20,9 @@ import os
 import struct
 from threefish import *
 
+# An empty bytestring that behaves itself whether in Python 2 or 3
+empty_bytes = array.array('B').tostring()
+
 class Skein512(object):
     block_size = 64
     block_bits = 512
@@ -47,7 +50,7 @@ class Skein512(object):
             self.update(msg)
 
     def start_new_type(self, block_type):
-        self.buf = "".encode()
+        self.buf = empty_bytes
         self.tf.tweak = [0, self.block_type[block_type]]
 
     def process_block(self, block, byte_count_add):
@@ -80,7 +83,7 @@ class Skein512(object):
         if not output:
             hash_val = words2bytes(self.tf.key)
         else:
-            hash_val = "".encode()
+            hash_val = empty_bytes
             self.buf = zero_bytes[:]
             key = self.tf.key[:] # temporary copy
             i=0
