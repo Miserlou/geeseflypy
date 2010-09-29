@@ -1,10 +1,13 @@
+#!/usr/bin/env python
+# coding=utf-8
+
 import sys
 import timeit
 
 sys.path.insert(0, '..')
 
-COUNT = 5 
-BLOCK_SIZE = 15 # KB
+COUNT = 3 
+BLOCK_SIZE = 20 # KB
 
 
 def hashing_throughput(module, func, args=""):
