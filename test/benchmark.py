@@ -1,4 +1,7 @@
+import sys
 import timeit
+
+sys.path.insert(0, '..')
 
 COUNT = 5 
 BLOCK_SIZE = 15 # KB
