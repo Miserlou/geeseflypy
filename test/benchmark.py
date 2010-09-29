@@ -14,7 +14,8 @@ def hashing_throughput(module, func, args=""):
             "update = hasher().update\n"\
             "txt = chr(0).encode() * %d"\
             % (module, func, BLOCK_SIZE*1024)
-    best = min(timeit.repeat("update(txt)", setup,
+    #best = min(timeit.repeat("update(txt)", setup,
+    best = min(timeit.Timer("update(txt)", setup).repeat(
                number=COUNT, repeat=5))
     return COUNT*BLOCK_SIZE/best
 
