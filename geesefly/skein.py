@@ -54,6 +54,9 @@ class Skein512(object):
         self.tf.tweak = [0, self.block_type[block_type]]
 
     def process_block(self, block, byte_count_add):
+        #blocks_len = len(block) / 8
+        #blocks = struct.unpack('%dQ' % blocks_len, block)
+        #for w in (blocks[i:i+8] for i in xrange(0,blocks_len,8)):
         for w in (bytes2words(block[i:i+64])
                   for i in xrange(0,len(block),64)):
             self.tf.tweak[0] = add64(self.tf.tweak[0], byte_count_add)
