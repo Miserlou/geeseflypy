@@ -15,9 +15,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from threefish import *
-from skein import *
-from geesefly import *
+from __future__ import absolute_import
+
+from .threefish import (bytes2words, Threefish512, words2bytes)
+from .skein import (Skein512, Skein512Random)
+from .geesefly import (compress_encrypt_auth, encrypt)
 
 if __name__ == "__main__":
     data = struct.pack('64B',*range(255,255-64,-1))

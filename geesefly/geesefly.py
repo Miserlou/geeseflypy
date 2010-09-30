@@ -14,12 +14,13 @@
 #  implied. See the License for the specific language governing
 #  permissions and limitations under the License.
 
-from skein import *
 import operator
 import zlib
-import binascii
 
-class AuthenticationError(StandardError):
+from .threefish import (bytes2words, Threefish512, words2bytes)
+from .skein import (empty_bytes, Skein512, Skein512Random)
+
+class AuthenticationError(Exception):
     pass
 
 # The following will be used as a prefix for ciphertext encoded with the
