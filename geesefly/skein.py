@@ -57,8 +57,9 @@ class Skein512(object):
         self.tf.tweak = [0, self.block_type[block_type]]
 
     def process_block(self, block, byte_count_add):
-        for w in (bytes2words(block[i:i+64])
-                  for i in xrange(0,len(block),64)):
+        block_len = len(block)
+        for i in xrange(0,block_len,64):
+            w = bytes2words(block[i:i+64])
             self.tf.tweak[0] = add64(self.tf.tweak[0], byte_count_add)
             self.tf.prepare_tweak()
             self.tf.prepare_key()
@@ -71,16 +72,20 @@ class Skein512(object):
         self.buf += msg
         buflen = len(self.buf)
         if buflen > 64:
-            end = -(buflen % 64) or buflen
+            end = -(buflen % 64) or (buflen-64)
             data = self.buf[0:end]
             self.buf = self.buf[end:]
-            self.process_block(data, 64)
-        return self
+            try:
+                self.process_block(data, 64)
+            except:
+                print(len(data))
+                print(binascii.b2a_hex(data))
 
     def final(self, output=True):
         self.tf.tweak[1] |= 0x8000000000000000 # SKEIN_T1_FLAG_FINAL
         buflen = len(self.buf)
         self.buf += zero_bytes[:64-buflen]
+
         self.process_block(self.buf, buflen)
 
         if not output:
