@@ -10,9 +10,9 @@
 #
 #  Unless required by applicable law or agreed to in writing, software
 #  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+#  implied. See the License for the specific language governing
+#  permissions and limitations under the License.
 
 import array
 import binascii
@@ -20,13 +20,8 @@ import os
 import struct
 
 from .threefish import (add64, bytes2words, Threefish512,
-                        words2bytes, words_format, zero_bytes,
-                        zero_words)
-
-try:
-    xrange
-except:
-    xrange = range
+                        words2bytes, words_format, xrange,
+                        zero_bytes, zero_words)
 
 # An empty bytestring that behaves itself whether in Python 2 or 3
 empty_bytes = array.array('B').tostring()
