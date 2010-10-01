@@ -15,10 +15,20 @@
 #  permissions and limitations under the License.
 
 import operator
+import struct
 import zlib
 
 from .threefish import (bytes2words, Threefish512, words2bytes)
 from .skein import (empty_bytes, Skein512, Skein512Random)
+
+try:
+    from itertools import imap
+except ImportError:
+    imap = map
+try:
+    xrange
+except:
+    xrange = range
 
 class AuthenticationError(Exception):
     pass

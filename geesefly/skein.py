@@ -19,8 +19,14 @@ import binascii
 import os
 import struct
 
-from .threefish import (bytes2words, Threefish512, words2bytes,
-                        zero_bytes, zero_words)
+from .threefish import (add64, bytes2words, Threefish512,
+                        words2bytes, words_format, zero_bytes,
+                        zero_words)
+
+try:
+    xrange
+except:
+    xrange = range
 
 # An empty bytestring that behaves itself whether in Python 2 or 3
 empty_bytes = array.array('B').tostring()
