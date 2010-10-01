@@ -16,6 +16,7 @@
 
 import struct
 from itertools import cycle
+from operator import xor
 
 # working out some differences between Python 2 and 3
 try:
@@ -44,10 +45,6 @@ ROT = (46, 36, 19, 37,
 PERM = (0,1,2,3,4,5,6,7,
         2,1,4,7,6,5,0,3,
         4,1,6,3,0,5,2,7,
-        6,1,0,7,2,5,4,3,
-        0,1,2,3,4,5,6,7,
-        2,1,4,7,6,5,0,3,
-        4,1,6,3,0,5,2,7,
         6,1,0,7,2,5,4,3)
 
 SKEIN_KS_PARITY = 0x5555555555555555
@@ -74,9 +71,17 @@ words_format = dict(
     (i,struct.Struct(words_format_tpl % i)) for i in (1,2,8))
 
 def bytes2words(data, length=8):
+    """
+    Converts bytestrings to a list of ``length`` 64-bit words.
+    Bytestrings should be of ``length`` * 8 bytes long.
+    """
     return list(words_format[length].unpack(data))
 
 def words2bytes(data, length=8):
+    """
+    Converts a list of ``length`` 64-bit words to a bytestring
+    of ``length`` * 8 bytes long.
+    """
     return words_format[length].pack(*data)
         
 def RotL_64(x, N):
@@ -84,9 +89,6 @@ def RotL_64(x, N):
 
 def RotR_64(x, N):
     return ((x >> (N & 63)) | (x << ((64-N) & 63))) & max64
-
-def xor64(a,b):
-    return (a ^ b) & max64
 
 def add64(a,b):
     return (a + b) & max64
@@ -108,14 +110,14 @@ class Threefish512(object):
             self.tweak = zero_words[:3]
 
     def prepare_key(self):
-        final = xor64(reduce(xor64, self.key[:8]), SKEIN_KS_PARITY)
+        final = reduce(xor, self.key[:8]) ^ SKEIN_KS_PARITY
         try:
             self.key[8] = final
         except IndexError:
             self.key.append(final)
 
     def prepare_tweak(self):
-        final =  xor64(self.tweak[0], self.tweak[1])
+        final =  self.tweak[0] ^ self.tweak[1]
         try:
             self.tweak[2] = final
         except IndexError:
@@ -134,7 +136,7 @@ class Threefish512(object):
                 n = PERM[2*i+1]
                 state[m] = add64(state[m], state[n])
                 state[n] = RotL_64(state[n], ROT[i+s])
-                state[n] = xor64(state[n], state[m])
+                state[n] = state[n] ^ state[m]
             for y in xrange(8):
                      state[y] = add64(state[y], key[(r+y) % 9])
             state[5] = add64(state[5], tweak[r % 3])
@@ -144,7 +146,7 @@ class Threefish512(object):
         return state
 
     def feed_forward(self, state, plaintext):
-        state[:] = list(imap(xor64, state, plaintext))
+        state[:] = list(imap(xor, state, plaintext))
 
     def decrypt_block(self, ciphertext):
         key = self.key
@@ -161,7 +163,7 @@ class Threefish512(object):
             for i in xrange(15,-1,-1):
                 m = PERM[2*i]
                 n = PERM[2*i+1]
-                state[n] = RotR_64(xor64(state[m],state[n]), ROT[i+s])
+                state[n] = RotR_64(state[m] ^ state[n], ROT[i+s])
                 state[m] = sub64(state[m], state[n])
         
         result = list(imap(sub64, state, key))
