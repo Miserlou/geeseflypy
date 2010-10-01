@@ -20,13 +20,3 @@ from __future__ import absolute_import
 from .threefish import (bytes2words, Threefish512, words2bytes)
 from .skein import (Skein512, Skein512Random)
 from .geesefly import (compress_encrypt_auth, encrypt)
-
-if __name__ == "__main__":
-    data = struct.pack('64B',*range(255,255-64,-1))
-    digest = Skein512(data).final()
-    print("hash result:\n\t%s\n" % Skein512(data).hexdigest())
-
-    key = "spam!".encode()
-    plaintext = "Spam, Spam, Spam, Spam, Spam, Spam, baked beans, Spam, Spam, Spam and Spam!".encode()
-    result = encrypt(plaintext, key)
-    print(encrypt(result, key))
