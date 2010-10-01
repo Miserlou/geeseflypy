@@ -16,9 +16,9 @@
 #  permissions and limitations under the License.
 
 """
-geesefly.py is a pure Python implementation of the Skein hash function
-and Threefish tweakable block cipher. It also includes a pseudo-random
-number generator based on Skein, and Cipher-Block Chaining (CBC) based
+A pure Python implementation of the Skein hash function and Threefish
+tweakable block cipher. It also includes a pseudo-random number
+generator based on Skein, and Cipher-Block Chaining (CBC) based
 functionality for encrypting variable-length data.
 """
 

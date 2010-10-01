@@ -42,10 +42,10 @@ ROT = (46, 36, 19, 37,
        25, 29, 39, 43,
         8, 35, 56, 22)
 
-PERM = (0,1,2,3,4,5,6,7,
-        2,1,4,7,6,5,0,3,
-        4,1,6,3,0,5,2,7,
-        6,1,0,7,2,5,4,3)
+PERM = ((0,1),(2,3),(4,5),(6,7),
+        (2,1),(4,7),(6,5),(0,3),
+        (4,1),(6,3),(0,5),(2,7),
+        (6,1),(0,7),(2,5),(4,3))
 
 SKEIN_KS_PARITY = 0x5555555555555555
 
@@ -71,29 +71,38 @@ words_format = dict(
     (i,struct.Struct(words_format_tpl % i)) for i in (1,2,8))
 
 def bytes2words(data, length=8):
-    """
-    Converts bytestrings to a list of ``length`` 64-bit words.
-    Bytestrings should be of ``length`` * 8 bytes long.
+    """Return a list of ``length`` 64-bit words from ``data``.
+    
+    ``data`` must consist of ``length`` * 8 bytes.
+    ``length`` must be 1, 2, or 8.
+    
     """
     return list(words_format[length].unpack(data))
 
 def words2bytes(data, length=8):
-    """
-    Converts a list of ``length`` 64-bit words to a bytestring
-    of ``length`` * 8 bytes long.
+    """Return a ``length`` * 8 byte string from ``data``.
+
+
+    ``data`` must be a list of ``length`` 64-bit words
+    ``length`` must be 1, 2, or 8.
+
     """
     return words_format[length].pack(*data)
         
 def RotL_64(x, N):
+    """Return ``x`` rotated left by ``N``.""" 
     return (x << (N & 63)) & max64 | (x >> ((64-N) & 63))
 
 def RotR_64(x, N):
+    """Return ``x`` rotated right by ``N``.""" 
     return ((x >> (N & 63)) | (x << ((64-N) & 63))) & max64
 
 def add64(a,b):
+    """Return a 64-bit integer sum of ``a`` and ``b``."""
     return (a + b) & max64
 
 def sub64(a,b):
+    """Return a 64-bit integer difference of ``a`` and ``b``."""
     return (a - b) & max64
 
 class Threefish512(object):
@@ -132,8 +141,7 @@ class Threefish512(object):
 
         for r,s in izip(xrange(1,19),cycle((0,16))):
             for i in xrange(16):
-                m = PERM[2*i]
-                n = PERM[2*i+1]
+                m,n = PERM[i]
                 state[m] = add64(state[m], state[n])
                 state[n] = RotL_64(state[n], ROT[i+s])
                 state[n] = state[n] ^ state[m]
@@ -155,14 +163,13 @@ class Threefish512(object):
 
         for r,s in izip(xrange(18,0,-1),cycle((16,0))):
             for y in xrange(8):
-                     state[y] = sub64(state[y], key[(r+y) % 9])
+                 state[y] = sub64(state[y], key[(r+y) % 9])
             state[5] = sub64(state[5], tweak[r % 3])
             state[6] = sub64(state[6], tweak[(r+1) % 3])
             state[7] = sub64(state[7], r)
 
             for i in xrange(15,-1,-1):
-                m = PERM[2*i]
-                n = PERM[2*i+1]
+                m,n = PERM[i]
                 state[n] = RotR_64(state[m] ^ state[n], ROT[i+s])
                 state[m] = sub64(state[m], state[n])
         
