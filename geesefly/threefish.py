@@ -1,3 +1,4 @@
+# /usr/bin/env python
 # coding=utf-8
 
 #  Copyright 2010 Jonathan Bowman
@@ -13,6 +14,12 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
 #  implied. See the License for the specific language governing
 #  permissions and limitations under the License.
+
+"""Pure Python implementation of the Threefish block cipher
+
+The core of the Skein 512-bit hashing algorithm
+
+"""
 
 import struct
 from itertools import cycle
