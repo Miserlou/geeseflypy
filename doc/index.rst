@@ -3,27 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to geesefly.py's documentation!
-=======================================
+Documentation for geesefly.py
+=============================
+
+.. automodule:: geesefly
 
 Contents:
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
-.. automodule:: geesefly
-
-.. autofunction:: bytes2words
-.. autofunction:: words2bytes
-.. autoclass:: Threefish512
-   :members:
-   :undoc-members:
-
-.. autoclass:: Skein512
-   :members:
-
-.. autofunction:: encrypt
-.. autofunction:: compress_encrypt_auth
+   helper
+   skein
+   threefish
+   random
+   geesefly
 
 Indices and tables
 ==================
