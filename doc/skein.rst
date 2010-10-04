@@ -1,8 +1,6 @@
 Skein hashing
 =============
 
-.. automodule:: geesefly
-
-.. autoclass:: Skein512
+.. autoclass:: geesefly.Skein512
    :members:
 

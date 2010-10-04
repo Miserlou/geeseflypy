@@ -1,4 +1,4 @@
-Skein-based psuedo random number generator
+Skein-based pseudo random number generator
 ==========================================
 
 

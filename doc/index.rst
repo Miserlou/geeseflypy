@@ -13,11 +13,11 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   helper
    skein
    threefish
    random
    geesefly
+   helper
 
 Indices and tables
 ==================

@@ -1,7 +1,5 @@
 Helper functions
 ================
 
-.. automodule:: geesefly
-
-.. autofunction:: bytes2words
-.. autofunction:: words2bytes
+.. autofunction:: geesefly.bytes2words
+.. autofunction:: geesefly.words2bytes
