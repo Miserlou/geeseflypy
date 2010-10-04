@@ -78,41 +78,49 @@ words_format = dict(
     (i,struct.Struct(words_format_tpl % i)) for i in (1,2,8))
 
 def bytes2words(data, length=8):
-    """Return a list of ``length`` 64-bit words from ``data``.
+    """Return a list of `length` 64-bit words from `data`.
     
-    ``data`` must consist of ``length`` * 8 bytes.
-    ``length`` must be 1, 2, or 8.
-    
+    `data` must consist of `length` * 8 bytes.
+    `length` must be 1, 2, or 8.
+
     """
     return list(words_format[length].unpack(data))
 
 def words2bytes(data, length=8):
-    """Return a ``length`` * 8 byte string from ``data``.
+    """Return a `length` * 8 byte string from `data`.
 
 
-    ``data`` must be a list of ``length`` 64-bit words
-    ``length`` must be 1, 2, or 8.
+    `data` must be a list of `length` 64-bit words
+    `length` must be 1, 2, or 8.
 
     """
     return words_format[length].pack(*data)
         
 def RotL_64(x, N):
-    """Return ``x`` rotated left by ``N``.""" 
+    """Return `x` rotated left by `N`.""" 
     return (x << (N & 63)) & max64 | (x >> ((64-N) & 63))
 
 def RotR_64(x, N):
-    """Return ``x`` rotated right by ``N``.""" 
+    """Return `x` rotated right by `N`.""" 
     return ((x >> (N & 63)) | (x << ((64-N) & 63))) & max64
 
 def add64(a,b):
-    """Return a 64-bit integer sum of ``a`` and ``b``."""
+    """Return a 64-bit integer sum of `a` and `b`."""
     return (a + b) & max64
 
 def sub64(a,b):
-    """Return a 64-bit integer difference of ``a`` and ``b``."""
+    """Return a 64-bit integer difference of `a` and `b`."""
     return (a - b) & max64
 
 class Threefish512(object):
+    """The Threefish 512-bit block cipher.
+
+    The key and tweak may be set when initialized (as
+    bytestrings) or after initialization using the ``tweak`` or
+    ``key`` properties. When choosing the latter, be sure to call
+    the ``prepare_key`` and ``prepare_tweak`` methods.
+
+    """
     def __init__(self, key=None, tweak=None):
         if key:
             self.key = bytes2words(key)
