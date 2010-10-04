@@ -9,7 +9,21 @@ Welcome to geesefly.py's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+
+.. automodule:: geesefly
+
+.. autofunction:: bytes2words
+.. autofunction:: words2bytes
+.. autoclass:: Threefish512
+   :members:
+   :undoc-members:
+
+.. autoclass:: Skein512
+   :members:
+
+.. autofunction:: encrypt
+.. autofunction:: compress_encrypt_auth
 
 Indices and tables
 ==================
