@@ -122,6 +122,13 @@ class Threefish512(object):
 
     """
     def __init__(self, key=None, tweak=None):
+        """Set key and tweak.
+
+        The key and the tweak will be lists of 8 64-bit words
+        converted from `key` and `tweak` bytestrings, or all
+        zeroes if not specified.
+
+        """
         if key:
             self.key = bytes2words(key)
             self.prepare_key()
@@ -134,6 +141,7 @@ class Threefish512(object):
             self.tweak = zero_words[:3]
 
     def prepare_key(self):
+        """Compute key."""
         final = reduce(xor, self.key[:8]) ^ SKEIN_KS_PARITY
         try:
             self.key[8] = final
@@ -141,6 +149,7 @@ class Threefish512(object):
             self.key.append(final)
 
     def prepare_tweak(self):
+        """Compute tweak."""
         final =  self.tweak[0] ^ self.tweak[1]
         try:
             self.tweak[2] = final
@@ -148,6 +157,11 @@ class Threefish512(object):
             self.tweak.append(final)
 
     def encrypt_block(self, plaintext):
+        """Return 8-word ciphertext, encrypted from plaintext.
+
+        `plaintext` must be a list of 8 64-bit words.
+
+        """
         key = self.key
         tweak = self.tweak
         state = list(imap(add64, plaintext, key[:8]))
@@ -169,9 +183,15 @@ class Threefish512(object):
         return state
 
     def feed_forward(self, state, plaintext):
+        """Compute additional step required when hashing."""
         state[:] = list(imap(xor, state, plaintext))
 
     def decrypt_block(self, ciphertext):
+        """Return 8-word plaintext, decrypted from plaintext.
+
+        `ciphertext` must be a list of 8 64-bit words.
+
+        """
         key = self.key
         tweak = self.tweak
         state = ciphertext[:]
