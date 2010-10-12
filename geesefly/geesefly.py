@@ -101,9 +101,9 @@ def encrypt(data, key):
 def compress_encrypt_auth(data, key):
     """Return ciphertext, compressing then encrypting `data` with `key`.
 
-    The compressed/encrypted message is also authenticated using a key
-    derived from `key`, but not the same key as used to encrypt the
-    data.
+    The compressed/encrypted message is also authenticated using Skein
+    MAC and a key derived from `key`, but not the same key as used to
+    encrypt the data.
 
     Both `data` and `key` may be of arbitrary length.
 
