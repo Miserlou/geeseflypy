@@ -182,8 +182,12 @@ class Threefish512(object):
 
         return state
 
-    def feed_forward(self, state, plaintext):
-        """Compute additional step required when hashing."""
+    def _feed_forward(self, state, plaintext):
+        """Compute additional step required when hashing.
+        
+        Primarily for internal use.
+
+        """
         state[:] = list(imap(xor, state, plaintext))
 
     def decrypt_block(self, ciphertext):
