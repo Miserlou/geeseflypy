@@ -21,24 +21,13 @@ The core of the Skein 512-bit hashing algorithm
 
 """
 
-import struct
-from itertools import cycle
-from operator import xor
-
-# working out some differences between Python 2 and 3
 try:
-    from itertools import imap, izip
+    import numpy as np
+    from util_numpy import *
 except ImportError:
-    imap = map
-    izip = zip
-try:
-    reduce
-except NameError:
-    from functools import reduce
-try:
-    xrange = xrange
-except:
-    xrange = range
+    from util import *
+
+from itertools import cycle
 
 ROT = (46, 36, 19, 37,
        33, 27, 14, 42,
@@ -55,62 +44,6 @@ PERM = ((0,1),(2,3),(4,5),(6,7),
         (6,1),(0,7),(2,5),(4,3))
 
 SKEIN_KS_PARITY = 0x5555555555555555
-
-max64 = 0xffffffffffffffff
-
-# zeroed out byte string and list for convenience and performance
-zero_bytes = struct.pack('64B', *[0] * 64)
-zero_words = [0] * 8
-
-# Build structs for conversion appropriate to this system, favoring
-# native formats if possible for slight performance benefit
-words_format_tpl = "%dQ"
-if struct.pack('2B', 0, 1) == struct.pack('=H', 1): # big endian?
-    words_format_tpl = "<" + words_format_tpl # force little endian
-else:
-    try: # is 64-bit integer native?
-        struct.unpack(words_format_tpl % 2, zero_bytes[:16])
-    except(struct.error): # Use standard instead of native
-        words_format_tpl = "=" + words_format_tpl
-
-# build structs for one-, two- and eight-word sequences
-words_format = dict(
-    (i,struct.Struct(words_format_tpl % i)) for i in (1,2,8))
-
-def bytes2words(data, length=8):
-    """Return a list of `length` 64-bit words from `data`.
-    
-    `data` must consist of `length` * 8 bytes.
-    `length` must be 1, 2, or 8.
-
-    """
-    return list(words_format[length].unpack(data))
-
-def words2bytes(data, length=8):
-    """Return a `length` * 8 byte string from `data`.
-
-
-    `data` must be a list of `length` 64-bit words
-    `length` must be 1, 2, or 8.
-
-    """
-    return words_format[length].pack(*data)
-        
-def RotL_64(x, N):
-    """Return `x` rotated left by `N`.""" 
-    return (x << (N & 63)) & max64 | (x >> ((64-N) & 63))
-
-def RotR_64(x, N):
-    """Return `x` rotated right by `N`.""" 
-    return ((x >> (N & 63)) | (x << ((64-N) & 63))) & max64
-
-def add64(a,b):
-    """Return a 64-bit integer sum of `a` and `b`."""
-    return (a + b) & max64
-
-def sub64(a,b):
-    """Return a 64-bit integer difference of `a` and `b`."""
-    return (a - b) & max64
 
 class Threefish512(object):
     """The Threefish 512-bit block cipher.
