@@ -22,7 +22,7 @@ import binascii
 import os
 import struct
 
-from .threefish import (add64, bytes2words, Threefish512,
+from .threefish import (add64, bigint, bytes2words, Threefish512, words,
                         words2bytes, words_format, xrange,
                         zero_bytes, zero_words)
 
@@ -82,7 +82,7 @@ class Skein512(object):
         
         """
         self.buf = empty_bytes
-        self.tf.tweak = [0, self.block_type[block_type]]
+        self.tf.tweak = words([0, self.block_type[block_type]])
 
     def _process_block(self, block, byte_count_add):
         """Encrypt internal state using Threefish.
@@ -99,7 +99,7 @@ class Skein512(object):
             self.tf.key = self.tf.encrypt_block(w)
             self.tf._feed_forward(self.tf.key, w)
             # set second tweak value to ~SKEIN_T1_FLAG_FIRST:
-            self.tf.tweak[1] &= 0xbfffffffffffffff
+            self.tf.tweak[1] &= bigint(0xbfffffffffffffff)
 
     def update(self, msg):
         """Update internal state with new data to be hashed.
@@ -129,7 +129,7 @@ class Skein512(object):
         This function can be called as either ``final`` or ``digest``.
         
         """
-        self.tf.tweak[1] |= 0x8000000000000000 # SKEIN_T1_FLAG_FINAL
+        self.tf.tweak[1] |= bigint(0x8000000000000000) # SKEIN_T1_FLAG_FINAL
         buflen = len(self.buf)
         self.buf += zero_bytes[:64-buflen]
 

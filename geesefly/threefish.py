@@ -29,21 +29,19 @@ except ImportError:
 
 from itertools import cycle
 
-ROT = (46, 36, 19, 37,
-       33, 27, 14, 42,
-       17, 49, 36, 39,
-       44,  9, 54, 56,
-       39, 30, 34, 24,
-       13, 50, 10, 17,
-       25, 29, 39, 43,
-        8, 35, 56, 22)
+ROT = bytelist((46, 36, 19, 37,
+                33, 27, 14, 42,
+                17, 49, 36, 39,
+                44,  9, 54, 56,
+                39, 30, 34, 24,
+                13, 50, 10, 17,
+                25, 29, 39, 43,
+                 8, 35, 56, 22))
 
-PERM = ((0,1),(2,3),(4,5),(6,7),
-        (2,1),(4,7),(6,5),(0,3),
-        (4,1),(6,3),(0,5),(2,7),
-        (6,1),(0,7),(2,5),(4,3))
-
-SKEIN_KS_PARITY = 0x5555555555555555
+PERM = bytelist(((0,1),(2,3),(4,5),(6,7),
+                 (2,1),(4,7),(6,5),(0,3),
+                 (4,1),(6,3),(0,5),(2,7),
+                 (6,1),(0,7),(2,5),(4,3)))
 
 class Threefish512(object):
     """The Threefish 512-bit block cipher.
@@ -66,7 +64,7 @@ class Threefish512(object):
             self.key = bytes2words(key)
             self.prepare_key()
         else:
-            self.key = zero_words[:] + [0]
+            self.key = words(zero_words[:] + [0])
         if tweak:
             self.tweak = bytes2words(tweak, 2)
             self.prepare_tweak()
@@ -79,7 +77,8 @@ class Threefish512(object):
         try:
             self.key[8] = final
         except IndexError:
-            self.key.append(final)
+            #self.key.append(final)
+            self.key = words(list(self.key) + [final])
 
     def prepare_tweak(self):
         """Compute tweak."""
@@ -87,7 +86,8 @@ class Threefish512(object):
         try:
             self.tweak[2] = final
         except IndexError:
-            self.tweak.append(final)
+            #self.tweak.append(final)
+            self.tweak = words(list(self.tweak) + [final])
 
     def encrypt_block(self, plaintext):
         """Return 8-word ciphertext, encrypted from plaintext.
@@ -97,7 +97,7 @@ class Threefish512(object):
         """
         key = self.key
         tweak = self.tweak
-        state = list(imap(add64, plaintext, key[:8]))
+        state = words(list(imap(add64, plaintext, key[:8])))
         state[5] = add64(state[5], tweak[0])
         state[6] = add64(state[6], tweak[1])
 
