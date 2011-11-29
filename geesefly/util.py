@@ -80,13 +80,13 @@ def words2bytes(data, length=8):
 
     """
     return words_format[length].pack(*data)
-        
+
 def RotL_64(x, N):
-    """Return `x` rotated left by `N`.""" 
+    """Return `x` rotated left by `N`."""
     return (x << (N & 63)) & max64 | (x >> ((64-N) & 63))
 
 def RotR_64(x, N):
-    """Return `x` rotated right by `N`.""" 
+    """Return `x` rotated right by `N`."""
     return ((x >> (N & 63)) | (x << ((64-N) & 63))) & max64
 
 def add64(a,b):

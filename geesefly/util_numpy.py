@@ -44,7 +44,7 @@ SKEIN_KS_PARITY = np.uint64(0x5555555555555555)
 
 # zeroed out byte string and list for convenience and performance
 zero_bytes = struct.pack('64B', *[0] * 64)
-zero_words = np.uint64([0] * 8)
+zero_words = np.zeros(8, dtype=np.uint64)
 
 # Build structs for conversion appropriate to this system, favoring
 # native formats if possible for slight performance benefit
@@ -80,13 +80,26 @@ def words2bytes(data, length=8):
     """
     try:
         return(data.tostring())
-    except AttributeError: 
+    except AttributeError:
         return(np.uint64(data).tostring())
-        
+
 def RotL_64(x, N):
-    """Return `x` rotated left by `N`.""" 
-    return (x << (N & 63)) | (x >> ((64-N) & 63))
+    """Return `x` rotated left by `N`."""
+    #return (x << np.uint64(N & 63)) | (x >> np.uint64((64-N) & 63))
+    return(np.left_shift(x, (N & 63), dtype=np.uint64) |
+           np.right_shift(x, ((64-N) & 63), dtype=np.uint64))
 
 def RotR_64(x, N):
-    """Return `x` rotated right by `N`.""" 
-    return ((x >> (N & 63)) | (x << ((64-N) & 63)))
+    """Return `x` rotated right by `N`."""
+    return(np.right_shift(x, (N & 63), dtype=np.uint64) |
+           np.left_shift(x, ((64-N) & 63), dtype=np.uint64))
+
+def add64(a,b):
+    """Return a 64-bit integer sum of `a` and `b`."""
+    return(np.add(a, b, dtype=np.uint64))
+
+def sub64(a,b):
+    """Return a 64-bit integer difference of `a` and `b`."""
+    return(np.subtract(a, b, dtype=np.uint64))
+
+
