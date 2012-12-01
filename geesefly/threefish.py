@@ -20,12 +20,21 @@
 The core of the Skein 512-bit hashing algorithm
 
 """
+from __future__ import absolute_import
 
 try:
-    import numpy as np
-    from util_numpy import *
+    from .util_numpy import (add64, bigint, bytelist, bytes2words, imap, izip,
+                             sub64, SKEIN_KS_PARITY, words, words2bytes, words_format, xrange,
+                             zero_bytes, zero_words, RotL_64, RotR_64, xor)
 except ImportError:
-    from util import *
+    from .util import (add64, bigint, bytelist, bytes2words, imap, izip,
+                       sub64, SKEIN_KS_PARITY, words, words2bytes, words_format, xrange,
+                       zero_bytes, zero_words, RotL_64, RotR_64, xor)
+
+try:
+    reduce
+except NameError:
+    from functools import reduce
 
 from itertools import cycle
 

@@ -32,15 +32,11 @@ except ImportError:
     imap = map
     izip = zip
 try:
-    reduce
-except NameError:
-    from functools import reduce
-try:
     xrange = xrange
 except:
     xrange = range
 
-SKEIN_KS_PARITY = np.uint64(0x5555555555555555)
+SKEIN_KS_PARITY = np.uint64(0x1BD11BDAA9FC1A22)
 
 # zeroed out byte string and list for convenience and performance
 zero_bytes = struct.pack('64B', *[0] * 64)

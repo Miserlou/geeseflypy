@@ -11,17 +11,20 @@ import geesefly
 
 test_vectors = {
     struct.pack('B',0xff):
-    '42aa6bd9ca92e90ea28df6f6f2d0d9b85a2d1907ee4dc1b1'\
-    '71ace7eb1159be3bd1bc56586d92492b6eff9be03306994c'\
-    '65a332c4c24160f46655040e558e8329'.encode(),
+    '71b7bce6fe6452227b9ced6014249e5b'\
+    'f9a9754c3ad618ccc4e0aae16b316cc8'\
+    'ca698d864307ed3e80b6ef1570812ac5'\
+    '272dc409b5a012df2a579102f340617a'.encode(),
     struct.pack('64B',*range(255,255-64,-1)):
-    '04f96c6f61b3e237a4fa7755ee4acf34494222968954f495'\
-    'ad147a1a715f7a73ebecfa1ef275bed87dc60bd1a0bc6021'\
-    '06fa98f8e7237bd1ac0958e76d306678'.encode(),
+    '45863ba3be0c4dfc27e75d358496f4ac'\
+    '9a736a505d9313b42b2f5eada79fc17f'\
+    '63861e947afb1d056aa199575ad3f8c9'\
+    'a3cc1780b5e5fa4cae050e989876625b'.encode(),
     struct.pack('128B',*range(255,255-128,-1)):
-    'b484ae9fb73e6620b10d52e49260ad26620db2883ebafa21'\
-    '0d701922aca85368088144bdf4ef3d9898d47c34f130031b'\
-    '0a0992f09f62dd78b329525a777daf7d'.encode(),
+    '91cca510c263c4ddd010530a33073309'\
+    '628631f308747e1bcbaa90e451cab92e'\
+    '5188087af4188773a332303e6667a7a2'\
+    '10856f742139000071f48e8ba2a5adb7'.encode(),
 }
 
 if __name__ == "__main__":
