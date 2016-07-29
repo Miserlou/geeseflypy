@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='geeseflypy',
+    name='geesefly',
     version='0.4',
     author='Jonathan Bowman',
     author_email="bowmanjd@gmail.com",
@@ -9,7 +9,7 @@ setup(
     packages=['geesefly',],
     license='Apache License, Version 2.0',
     description='Pure Python implementation of Skein and Threefish',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     classifiers=[
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",

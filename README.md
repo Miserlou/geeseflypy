@@ -1,3 +1,16 @@
+# geesefly Mirror
+
+This is my mirror of Jonathan Bowman's geesefly.py, and made
+available in pip.
+
+## Installation
+
+To install from pip:
+
+    $ pip install geesefly
+
+## About
+
 geesefly.py is a pure Python implementation of the Skein hash function
 and Threefish tweakable block cipher. It also includes a pseudo-random
 number generator based on Skein, and Cipher-Block Chaining (CBC) based
