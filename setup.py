@@ -1,4 +1,19 @@
-from distutils.core import setup
+import os
+import sys
+from setuptools import setup
+
+# Set external files
+#try:
+#    from pypandoc import convert
+#    README = convert('README.md', 'rst')     
+#except ImportError:
+#    README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
+#
+#with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
+#    required = f.read().splitlines()
+#
+#with open(os.path.join(os.path.dirname(__file__), 'test_requirements.txt')) as f:
+#    test_required = f.read().splitlines()
 
 setup(
     name='geesefly',
@@ -26,4 +41,3 @@ setup(
     "Topic :: Security :: Cryptography",
     ],
 )
-
